@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class testlwjgl2dgame {
 
-    Window win;
+    private Window win;
 
     private void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -35,10 +35,10 @@ public class testlwjgl2dgame {
 
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(win.getWindow(), (window, key, scancode, action, mods) -> {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-        });
+        //glfwSetKeyCallback(win.getWindow(), (window, key, scancode, action, mods) -> {
+        //    if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
+        //        glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+        //});
     }
 
     private void loop() {
@@ -107,10 +107,17 @@ public class testlwjgl2dgame {
             time = time_2;
 
             while (unprocessed >= frame_cap) {
+                // in this loop everything that's not GL rendering
                 unprocessed -= frame_cap;
                 can_render = true;
 
                 target = scale;
+
+                if(win.getInput().isKeyDown(GLFW_KEY_ESCAPE)) {
+                    glfwSetWindowShouldClose(win.getWindow(), true);
+                }
+
+
                 // Poll for window events. The key callback above will only be
                 // invoked during this call.
                 glfwPollEvents();
@@ -124,6 +131,7 @@ public class testlwjgl2dgame {
             }
 
             if (can_render) {
+                // GL rendering
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
                 shader.bind();

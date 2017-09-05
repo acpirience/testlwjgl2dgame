@@ -84,12 +84,9 @@ public class Shader {
                 string.append("\n");
             }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         return string.toString();
     }
 

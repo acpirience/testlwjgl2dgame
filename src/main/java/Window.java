@@ -10,7 +10,10 @@ public class Window {
     private int width, height;
     private boolean fullscreen;
 
+    private Input input;
+
     public static void setCallbacks() {
+        // to be deleted ?
     }
 
     public Window() {
@@ -55,6 +58,8 @@ public class Window {
         }
         glfwShowWindow(window);
         glfwMakeContextCurrent(window);
+
+        input = new Input(window);
     }
 
     public boolean shouldClose() {
@@ -95,5 +100,10 @@ public class Window {
     public long getWindow() {
         return window;
     }
+
+    public Input getInput() {
+        return input;
+    }
+
 }
 
