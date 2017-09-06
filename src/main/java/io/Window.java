@@ -1,3 +1,5 @@
+package io;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
@@ -75,7 +77,6 @@ public class Window {
         glfwDestroyWindow(window);
     }
 
-
     public int getWidth() {
         return width;
     }
@@ -104,6 +105,8 @@ public class Window {
     public Input getInput() {
         return input;
     }
+
+
 
 }
 

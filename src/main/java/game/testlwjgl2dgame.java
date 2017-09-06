@@ -1,3 +1,7 @@
+package game;
+
+import io.*;
+import render.*;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.Version;
@@ -35,10 +39,10 @@ public class testlwjgl2dgame {
 
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        //glfwSetKeyCallback(win.getWindow(), (window, key, scancode, action, mods) -> {
-        //    if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-        //        glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-        //});
+        glfwSetKeyCallback(win.getWindow(), (window, key, scancode, action, mods) -> {
+            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
+                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+        });
     }
 
     private void loop() {
@@ -113,13 +117,6 @@ public class testlwjgl2dgame {
 
                 target = scale;
 
-                if(win.getInput().isKeyDown(GLFW_KEY_ESCAPE)) {
-                    glfwSetWindowShouldClose(win.getWindow(), true);
-                }
-
-
-                // Poll for window events. The key callback above will only be
-                // invoked during this call.
                 glfwPollEvents();
 
                 if (frame_time >= 1.0) {
