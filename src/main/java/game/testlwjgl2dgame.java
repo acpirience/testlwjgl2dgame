@@ -6,6 +6,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
+import world.TileRenderer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -56,6 +57,9 @@ public class testlwjgl2dgame {
         Camera camera = new Camera(win.getWidth(),win.getHeight());
         glEnable(GL_TEXTURE_2D);
 
+        TileRenderer tiles = new TileRenderer();
+
+/*
         float[] vertices = new float[]  {
                 -0.5f, 0.5f, 0, // TOP LEFT     0
                  0.5f, 0.5f, 0, // TOP RIGHT    1
@@ -78,15 +82,21 @@ public class testlwjgl2dgame {
         };
 
         Model model = new Model(vertices, tex_coords, indices);
-        Shader shader = new Shader("shader");
 
         Texture tex = new Texture("./res/smiley.png");
 
-        Matrix4f scale = new Matrix4f().scale(64);
+*/
 
-        Matrix4f target = scale;
+        Shader shader = new Shader("shader");
 
-        camera.setPosition(new Vector3f(100,0,0));
+
+        Matrix4f scale = new Matrix4f()
+                .translate(new Vector3f(0,0,0))
+                .scale(32);
+
+//        Matrix4f target = scale;
+
+//        camera.setPosition(new Vector3f(0,0,0));
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;
@@ -115,7 +125,7 @@ public class testlwjgl2dgame {
                 unprocessed -= frame_cap;
                 can_render = true;
 
-                target = scale;
+  //              target = scale;
 
                 glfwPollEvents();
 
@@ -131,12 +141,17 @@ public class testlwjgl2dgame {
                 // GL rendering
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
+                for (int i = 0; i < 8; i++) {
+                    tiles.renderTile((byte)0, i, 0 , shader, scale, camera);
+                }
+                
+/*
                 shader.bind();
                 shader.setUniform("sampler", 0);
                 shader.setUniform("projection", camera.getProjection().mul(target));
                 tex.bind(0);
                 model.render();
-
+*/
                 win.swapBuffers();
                 frames ++;
             }
