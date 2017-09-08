@@ -80,4 +80,7 @@ public class World {
         }
     }
 
+    public int getScale() {
+        return scale;
+    }
 }

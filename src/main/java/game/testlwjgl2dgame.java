@@ -1,5 +1,6 @@
 package game;
 
+import entity.Player;
 import io.*;
 import render.*;
 import org.joml.Vector3f;
@@ -64,9 +65,11 @@ public class testlwjgl2dgame {
 
         World world = new World();
 
+        Player player = new Player();
+
         world.setTile(Tile.testTile2,0,0);
-        world.setTile(Tile.testTile2,0,1);
-        world.setTile(Tile.testTile2,1,0);
+        world.setTile(Tile.testTile2,0,63);
+        world.setTile(Tile.testTile2,63,0);
         world.setTile(Tile.testTile2,63,63);
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
@@ -96,21 +99,7 @@ public class testlwjgl2dgame {
                 unprocessed -= frame_cap;
                 can_render = true;
 
-                if (window.getInput().isKeyDown(GLFW_KEY_LEFT)) {
-                    camera.getPosition().sub(new Vector3f(-5,0,0));
-                }
-
-                if (window.getInput().isKeyDown(GLFW_KEY_RIGHT)) {
-                    camera.getPosition().sub(new Vector3f(5,0,0));
-                }
-
-                if (window.getInput().isKeyDown(GLFW_KEY_UP)) {
-                    camera.getPosition().sub(new Vector3f(0,5,0));
-                }
-
-                if (window.getInput().isKeyDown(GLFW_KEY_DOWN)) {
-                    camera.getPosition().sub(new Vector3f(0,-5,0));
-                }
+                player.update((float)frame_cap, window, camera, world);
 
                 world.correctCamera(camera, window);
 
@@ -130,6 +119,7 @@ public class testlwjgl2dgame {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
                 world.render(tiles, shader, camera, window);
+                player.render(shader, camera);
 
                 window.swapBuffers();
                 frames ++;
