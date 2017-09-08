@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class testlwjgl2dgame {
 
-    private Window win;
+    private Window window;
 
     private void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -23,7 +23,7 @@ public class testlwjgl2dgame {
         loop();
 
         // Free the window callbacks and destroy the window
-        win.destroy();
+        window.destroy();
         // Terminate GLFW and free the error callback
         glfwTerminate();
         glfwSetErrorCallback(null).free();
@@ -34,14 +34,14 @@ public class testlwjgl2dgame {
         if ( !glfwInit() )
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        win = new Window();
-        win.setSize(640,480);
-//        win.setFullscreen(true);
-        win.createWindow("Game");
+        window = new Window();
+        window.setSize(640,480);
+//        window.setFullscreen(true);
+        window.createWindow("Game");
 
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(win.getWindow(), (window, key, scancode, action, mods) -> {
+        glfwSetKeyCallback(window.getWindow(), (window, key, scancode, action, mods) -> {
             if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
         });
@@ -55,7 +55,7 @@ public class testlwjgl2dgame {
         // bindings available for use.
         GL.createCapabilities();
 
-        Camera camera = new Camera(win.getWidth(),win.getHeight());
+        Camera camera = new Camera(window.getWidth(), window.getHeight());
         glEnable(GL_TEXTURE_2D);
 
         TileRenderer tiles = new TileRenderer();
@@ -65,6 +65,8 @@ public class testlwjgl2dgame {
         World world = new World();
 
         world.setTile(Tile.testTile2,0,0);
+        world.setTile(Tile.testTile2,0,1);
+        world.setTile(Tile.testTile2,1,0);
         world.setTile(Tile.testTile2,63,63);
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
@@ -79,7 +81,7 @@ public class testlwjgl2dgame {
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while (!win.shouldClose()) {
+        while (!window.shouldClose()) {
             boolean can_render = false;
 
             double time_2 = Timer.getTime();
@@ -94,23 +96,23 @@ public class testlwjgl2dgame {
                 unprocessed -= frame_cap;
                 can_render = true;
 
-                if (win.getInput().isKeyDown(GLFW_KEY_LEFT)) {
+                if (window.getInput().isKeyDown(GLFW_KEY_LEFT)) {
                     camera.getPosition().sub(new Vector3f(-5,0,0));
                 }
 
-                if (win.getInput().isKeyDown(GLFW_KEY_RIGHT)) {
+                if (window.getInput().isKeyDown(GLFW_KEY_RIGHT)) {
                     camera.getPosition().sub(new Vector3f(5,0,0));
                 }
 
-                if (win.getInput().isKeyDown(GLFW_KEY_UP)) {
+                if (window.getInput().isKeyDown(GLFW_KEY_UP)) {
                     camera.getPosition().sub(new Vector3f(0,5,0));
                 }
 
-                if (win.getInput().isKeyDown(GLFW_KEY_DOWN)) {
+                if (window.getInput().isKeyDown(GLFW_KEY_DOWN)) {
                     camera.getPosition().sub(new Vector3f(0,-5,0));
                 }
 
-                world.correctCamera(camera, win);
+                world.correctCamera(camera, window);
 
                 glfwPollEvents();
 
@@ -127,9 +129,9 @@ public class testlwjgl2dgame {
                 // GL rendering
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-                world.render(tiles, shader, camera);
+                world.render(tiles, shader, camera, window);
 
-                win.swapBuffers();
+                window.swapBuffers();
                 frames ++;
             }
 

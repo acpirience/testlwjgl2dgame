@@ -66,4 +66,11 @@ public class Model {
         return buffer;
     }
 
+    protected void finalize() throws Throwable {
+      glDeleteBuffers(v_id);
+      glDeleteBuffers(t_id);
+      glDeleteBuffers(i_id);
+      super.finalize();
+    }
+
 }

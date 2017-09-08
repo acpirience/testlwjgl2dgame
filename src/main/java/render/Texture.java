@@ -49,7 +49,11 @@ public class Texture {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    protected void finalize() throws Throwable{
+        glDeleteTextures(id);
+        super.finalize();
     }
 
     public void bind() {
