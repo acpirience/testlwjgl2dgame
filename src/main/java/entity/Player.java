@@ -2,17 +2,15 @@ package entity;
 
 import io.Window;
 import org.joml.Vector3f;
-import render.Camera;
-import render.Model;
-import render.Shader;
-import render.Texture;
+import render.*;
 import world.World;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Player {
     private Model model;
-    private Texture texture;
+    //private Texture texture;
+    private Animation texture;
     private Transform transform;
 
     public Player() {
@@ -38,7 +36,7 @@ public class Player {
         };
 
         model = new Model(vertices, tex_coords, indices);
-        this.texture = new Texture("smiley.png");
+        this.texture = new Animation(5, 10, "xxx");
 
         transform = new Transform();
         transform.setScale(new Vector3f(16,16,1));
