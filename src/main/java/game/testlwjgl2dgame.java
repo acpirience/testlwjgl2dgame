@@ -2,11 +2,11 @@ package game;
 
 import io.*;
 import render.*;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
 import world.TileRenderer;
+import world.World;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -59,44 +59,9 @@ public class testlwjgl2dgame {
 
         TileRenderer tiles = new TileRenderer();
 
-/*
-        float[] vertices = new float[]  {
-                -0.5f, 0.5f, 0, // TOP LEFT     0
-                 0.5f, 0.5f, 0, // TOP RIGHT    1
-                 0.5f,-0.5f, 0, // BOTTOM RIGHT 2
-                -0.5f,-0.5f, 0  // BOTTOM LEFT  3
-        };
-
-        float[] tex_coords = new float[] {
-                      //      0,0    0,1
-                0, 0, //TL 0   +----->
-                0, 1, //TR 1   |     |
-                1, 1, //BR 2   |     |
-                1, 0 // BL 3   v-----+
-                     //       1,0    1,1
-        };
-
-        int[] indices = new int[] {
-                0,1,2,
-                2,3,0
-        };
-
-        Model model = new Model(vertices, tex_coords, indices);
-
-        Texture tex = new Texture("./res/smiley.png");
-
-*/
-
         Shader shader = new Shader("shader");
 
-
-        Matrix4f scale = new Matrix4f()
-                .translate(new Vector3f(0,0,0))
-                .scale(32);
-
-//        Matrix4f target = scale;
-
-//        camera.setPosition(new Vector3f(0,0,0));
+        World world = new World();
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;
@@ -125,13 +90,28 @@ public class testlwjgl2dgame {
                 unprocessed -= frame_cap;
                 can_render = true;
 
-  //              target = scale;
+                if (win.getInput().isKeyDown(GLFW_KEY_LEFT)) {
+                    camera.getPosition().sub(new Vector3f(-5,0,0));
+                }
+
+                if (win.getInput().isKeyDown(GLFW_KEY_RIGHT)) {
+                    camera.getPosition().sub(new Vector3f(5,0,0));
+                }
+
+                if (win.getInput().isKeyDown(GLFW_KEY_UP)) {
+                    camera.getPosition().sub(new Vector3f(0,5,0));
+                }
+
+                if (win.getInput().isKeyDown(GLFW_KEY_DOWN)) {
+                    camera.getPosition().sub(new Vector3f(0,-5,0));
+                }
 
                 glfwPollEvents();
 
                 if (frame_time >= 1.0) {
                     frame_time = 0;
                     System.out.println("FPS: " + frames);
+                    System.out.println("Cam: " + camera.getPosition());
                     frames = 0;
                 }
 
@@ -141,17 +121,8 @@ public class testlwjgl2dgame {
                 // GL rendering
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-                for (int i = 0; i < 8; i++) {
-                    tiles.renderTile((byte)0, i, 0 , shader, scale, camera);
-                }
-                
-/*
-                shader.bind();
-                shader.setUniform("sampler", 0);
-                shader.setUniform("projection", camera.getProjection().mul(target));
-                tex.bind(0);
-                model.render();
-*/
+                world.render(tiles, shader, camera);
+
                 win.swapBuffers();
                 frames ++;
             }
