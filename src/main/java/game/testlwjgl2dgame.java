@@ -5,6 +5,7 @@ import render.*;
 import org.joml.Vector3f;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
+import world.Tile;
 import world.TileRenderer;
 import world.World;
 
@@ -63,6 +64,9 @@ public class testlwjgl2dgame {
 
         World world = new World();
 
+        world.setTile(Tile.testTile2,0,0);
+        world.setTile(Tile.testTile2,63,63);
+
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;
         int frames = 0;
@@ -105,6 +109,8 @@ public class testlwjgl2dgame {
                 if (win.getInput().isKeyDown(GLFW_KEY_DOWN)) {
                     camera.getPosition().sub(new Vector3f(0,-5,0));
                 }
+
+                world.correctCamera(camera, win);
 
                 glfwPollEvents();
 
