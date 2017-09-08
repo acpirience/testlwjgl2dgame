@@ -1,9 +1,10 @@
 package game;
 
+import collision.AABB;
 import entity.Player;
 import io.*;
+import org.joml.Vector2f;
 import render.*;
-import org.joml.Vector3f;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
 import world.Tile;
@@ -46,6 +47,9 @@ public class testlwjgl2dgame {
             if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
         });
+
+
+
     }
 
     private void loop() {
@@ -67,9 +71,9 @@ public class testlwjgl2dgame {
 
         Player player = new Player();
 
-        world.setTile(Tile.testTile2,0,0);
-        world.setTile(Tile.testTile2,0,63);
-        world.setTile(Tile.testTile2,63,0);
+        world.setTile(Tile.testTile2,5,0);
+        world.setTile(Tile.testTile2,6,0);
+        world.setTile(Tile.testTile2,6,1);
         world.setTile(Tile.testTile2,63,63);
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
