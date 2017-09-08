@@ -69,5 +69,4 @@ public class Player {
         texture.bind(0);
         model.render();
     }
-
 }

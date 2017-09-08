@@ -43,7 +43,6 @@ public class TileRenderer {
                 if (!tile_textures.containsKey(Tile.tiles[i].getTexture())) {
                     String tex = Tile.tiles[i].getTexture();
                     tile_textures.put(tex, new Texture( tex + ".png"));
-
                 }
             }
         }

@@ -44,7 +44,6 @@ public class Animation {
         this.lastTime = currentTime;
 
         frames[pointer].bind(sampler);
-
     }
 
 }
