@@ -67,14 +67,11 @@ public class testlwjgl2dgame {
 
         Shader shader = new Shader("shader");
 
-        World world = new World();
+        World world = new World("test_level");
 
         Player player = new Player();
 
-        world.setTile(Tile.testTile2,5,0);
-        world.setTile(Tile.testTile2,6,0);
-        world.setTile(Tile.testTile2,6,1);
-        world.setTile(Tile.testTile2,63,63);
+
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;

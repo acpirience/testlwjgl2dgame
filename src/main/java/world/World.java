@@ -8,6 +8,11 @@ import org.joml.Vector3f;
 import render.Camera;
 import render.Shader;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 public class World {
     private final int view = 24;
     private byte[]tiles;
@@ -23,6 +28,46 @@ public class World {
         height = 64;
         tiles = new byte[width * height];
         boundindBoxes = new AABB[width * height];
+        world = new Matrix4f().setTranslation(new Vector3f(0,0,0));
+        world.scale(scale);
+    }
+
+    public World(String worldName) {
+        try {
+            BufferedImage tile_sheet = ImageIO.read(new File("./levels/" + worldName + "_tiles.png"));
+            //BufferedImage entity_sheet = ImageIO.read(new File("./levels/" + world + "_entity.png"));
+
+            width = tile_sheet.getWidth();
+            height = tile_sheet.getHeight();
+
+            int[] colorTileSheet = tile_sheet.getRGB(0,0,width, height,null,0, width);
+
+            tiles = new byte[width * height];
+            boundindBoxes = new AABB[width * height];
+
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    int red = (colorTileSheet[x + y * width] >> 16) & 0xFF;
+
+                    Tile t;
+                    try {
+                        t = Tile.tiles[red];
+                    }
+                    catch (ArrayIndexOutOfBoundsException e) {
+                        t = null;
+                    }
+
+                    if (t != null) {
+                        setTile(t, x , y);
+                    }
+
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         world = new Matrix4f().setTranslation(new Vector3f(0,0,0));
         world.scale(scale);
     }
