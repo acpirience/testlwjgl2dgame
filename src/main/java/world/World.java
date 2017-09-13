@@ -32,6 +32,10 @@ public class World {
         world.scale(scale);
     }
 
+    public Matrix4f getWorldMatrix() {
+        return world;
+    }
+
     public World(String worldName) {
         try {
             BufferedImage tile_sheet = ImageIO.read(new File("./levels/" + worldName + "_tiles.png"));

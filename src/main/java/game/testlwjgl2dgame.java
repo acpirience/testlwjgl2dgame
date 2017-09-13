@@ -1,9 +1,12 @@
 package game;
 
 import collision.AABB;
+import entity.Entity;
 import entity.Player;
+import entity.Transform;
 import io.*;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import render.*;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
@@ -65,13 +68,13 @@ public class testlwjgl2dgame {
 
         TileRenderer tiles = new TileRenderer();
 
+        Entity.initAsset();
+
         Shader shader = new Shader("shader");
 
         World world = new World("test_level");
 
-        Player player = new Player();
-
-
+        Player player = new Player(new Transform());
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;
@@ -120,13 +123,16 @@ public class testlwjgl2dgame {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
                 world.render(tiles, shader, camera, window);
-                player.render(shader, camera);
+                player.render(shader, camera, world);
 
                 window.swapBuffers();
                 frames ++;
             }
 
         }
+
+        Entity.deleteAsset();
+
     }
 
     public static void main(String[] args) {
