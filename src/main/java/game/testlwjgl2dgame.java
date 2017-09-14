@@ -74,8 +74,6 @@ public class testlwjgl2dgame {
 
         World world = new World("test_level");
 
-        Player player = new Player(new Transform());
-
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;
         int frames = 0;
@@ -103,7 +101,7 @@ public class testlwjgl2dgame {
                 unprocessed -= frame_cap;
                 can_render = true;
 
-                player.update((float)frame_cap, window, camera, world);
+                world.update((float)frame_cap, window, camera);
 
                 world.correctCamera(camera, window);
 
@@ -123,7 +121,6 @@ public class testlwjgl2dgame {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
                 world.render(tiles, shader, camera, window);
-                player.render(shader, camera, world);
 
                 window.swapBuffers();
                 frames ++;

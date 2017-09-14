@@ -13,7 +13,9 @@ public class Transform {
     }
 
     public Matrix4f getProjection(Matrix4f target) {
-        return target.scale(scale).translate(pos);
+        target.translate(pos);
+        target.scale(scale);
+        return target;
     }
 
     public void setScale(Vector3f scale) {

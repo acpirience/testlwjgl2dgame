@@ -1,10 +1,14 @@
 package world;
 
 import collision.AABB;
+import entity.Entity;
+import entity.Player;
+import entity.Transform;
 import io.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import render.Animation;
 import render.Camera;
 import render.Shader;
 
@@ -12,12 +16,14 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class World {
     private final int view = 24;
     private byte[]tiles;
     private AABB[] boundindBoxes;
-
+    private List<Entity> entities;
     private int width,height;
     private int scale = 16;
 
@@ -48,6 +54,8 @@ public class World {
 
             tiles = new byte[width * height];
             boundindBoxes = new AABB[width * height];
+            entities = new ArrayList<Entity>();
+
 
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
@@ -68,6 +76,22 @@ public class World {
                 }
 
             }
+
+            //TODO finish level loader
+            entities.add(new Player(new Transform()));
+            Transform t = new Transform();
+            t.pos.x = 0;
+            t.pos.y = -11 * 2;
+
+            entities.add(new Entity(new Animation(1,1,"xxx"), t) {
+                @Override
+                public void update(float delta, Window window, Camera camera, World world) {
+                    move(new Vector2f(5*delta, 0));
+                }
+
+            });
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,18 +100,32 @@ public class World {
         world.scale(scale);
     }
 
-    public void render(TileRenderer render, Shader shader, Camera cam, Window window) {
-        int posX = (int)(cam.getPosition().x + (window.getWidth()/2)) / (scale * 2);
-        int posY = (int)(cam.getPosition().y - (window.getHeight()/2)) / (scale * 2);
+    public void render(TileRenderer render, Shader shader, Camera camera, Window window) {
+        int posX = (int)(camera.getPosition().x + (window.getWidth()/2)) / (scale * 2);
+        int posY = (int)(camera.getPosition().y - (window.getHeight()/2)) / (scale * 2);
 
         for (int i = 0; i < view; i++) {
             for (int j = 0; j < view; j++) {
                 Tile t = getTile(i - posX,j + posY);
 
                 if (t != null) {
-                    render.renderTile(t,i - posX,-j - posY,shader, world, cam);
+                    render.renderTile(t,i - posX,-j - posY,shader, world, camera);
                 }
             }
+        }
+
+        for (Entity entity: entities) {
+            entity.render(shader, camera, this);
+        }
+    }
+
+    public void update(float delta, Window window, Camera camera) {
+        for (Entity entity: entities) {
+            entity.update(delta, window, camera, this);
+        }
+
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).collideWithTiles(this);
         }
     }
 

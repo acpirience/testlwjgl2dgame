@@ -38,7 +38,10 @@ public class Player extends Entity {
 
         move(movement);
 
-        super.update(delta, window, camera, world);
+        // smoother camera
+        camera.getPosition().lerp(transform.pos.mul(-world.getScale(), new Vector3f()), 0.1f);
+        //camera.setPosition(transform.pos.mul(-world.getScale(), new Vector3f()));
+
     }
 
 

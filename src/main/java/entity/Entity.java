@@ -14,12 +14,12 @@ import world.World;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Entity {
+public abstract class Entity {
     private static Model model;
-    private AABB boundingBox;
+    protected AABB boundingBox;
     //private Texture texture;
-    private Animation texture;
-    private Transform transform;
+    protected Animation texture;
+    protected Transform transform;
 
     public Entity(Animation animation, Transform transform) {
         this.texture = animation;
@@ -34,7 +34,7 @@ public class Entity {
         boundingBox.getCenter().set(transform.pos.x, transform.pos.y);
     }
 
-    public void update(float delta, Window window, Camera camera, World world) {
+    public void collideWithTiles(World world) {
         AABB[] boxes = new AABB[25];
 
         for (int i = 0; i < 5; i++) {
@@ -101,10 +101,10 @@ public class Entity {
             }
         }
 
-        // smoother camera
-        camera.getPosition().lerp(transform.pos.mul(-world.getScale(), new Vector3f()), 0.1f);
-        //camera.setPosition(transform.pos.mul(-world.getScale(), new Vector3f()));
+
     }
+
+    public abstract void update(float delta, Window window, Camera camera, World world);
 
     public void render(Shader shader, Camera camera, World world) {
         Matrix4f target = camera.getProjection();
