@@ -1,5 +1,6 @@
 package game;
 
+import assets.Assets;
 import entity.Entity;
 import io.*;
 import render.*;
@@ -66,7 +67,7 @@ public class testlwjgl2dgame {
 
         TileRenderer tiles = new TileRenderer();
 
-        Entity.initAsset();
+        Assets.initAsset();
 
         Shader shader = new Shader("shader");
 
@@ -131,7 +132,7 @@ public class testlwjgl2dgame {
 
         }
 
-        Entity.deleteAsset();
+        Assets.deleteAsset();
 
     }
 
