@@ -19,7 +19,7 @@ public class Texture {
         BufferedImage bi;
 
         try {
-            bi = ImageIO.read(new File("./res/" + filename));
+            bi = ImageIO.read(new File("./textures/" + filename));
             width = bi.getWidth();
             height = bi.getHeight();
 

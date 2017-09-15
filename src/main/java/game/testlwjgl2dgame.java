@@ -75,7 +75,7 @@ public class testlwjgl2dgame {
         World world = new World("test_level", camera);
         world.calculateView(window);
 
-        Gui gui = new Gui();
+        Gui gui = new Gui(window);
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;
@@ -128,7 +128,7 @@ public class testlwjgl2dgame {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
                 world.render(tiles, shader, camera);
-                gui.render(camera);
+                gui.render();
 
                 window.swapBuffers();
                 frames ++;
