@@ -71,6 +71,7 @@ public class testlwjgl2dgame {
         Shader shader = new Shader("shader");
 
         World world = new World("test_level", camera);
+        world.calculateView(window);
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;
@@ -93,6 +94,13 @@ public class testlwjgl2dgame {
 
             while (unprocessed >= frame_cap) {
                 // in this loop everything that's not GL rendering
+
+                if (window.hasResized()) {
+                    camera.setProjection(window.getWidth(), window.getHeight());
+                    world.calculateView(window);
+                    glViewport(0,0,window.getWidth(), window.getHeight());
+                }
+
                 unprocessed -= frame_cap;
                 can_render = true;
 
@@ -100,7 +108,7 @@ public class testlwjgl2dgame {
 
                 world.correctCamera(camera, window);
 
-                glfwPollEvents();
+                window.update();
 
                 if (frame_time >= 1.0) {
                     frame_time = 0;
@@ -115,7 +123,7 @@ public class testlwjgl2dgame {
                 // GL rendering
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-                world.render(tiles, shader, camera, window);
+                world.render(tiles, shader, camera);
 
                 window.swapBuffers();
                 frames ++;
