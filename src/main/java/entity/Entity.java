@@ -100,8 +100,6 @@ public abstract class Entity {
                 transform.pos.set(boundingBox.getCenter(), 0);
             }
         }
-
-
     }
 
     public abstract void update(float delta, Window window, Camera camera, World world);
@@ -145,5 +143,18 @@ public abstract class Entity {
         model = null;
     }
 
+    public void collideWithEntity(Entity entity) {
+        Collision collision = boundingBox.getCollision(entity.boundingBox);
+
+        if (collision.isIntersecting) {
+            collision.distance.mul(0.5f);
+
+            boundingBox.correctPosition(entity.boundingBox, collision);
+            transform.pos.set(boundingBox.getCenter().x, boundingBox.getCenter().y, 0);
+
+            entity.boundingBox.correctPosition(boundingBox, collision);
+            entity.transform.pos.set(entity.boundingBox.getCenter().x, entity.boundingBox.getCenter().y, 0);
+        }
+    }
 
 }
