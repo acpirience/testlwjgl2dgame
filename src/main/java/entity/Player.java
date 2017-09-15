@@ -17,8 +17,8 @@ public class Player extends Entity {
 
     public Player(Transform transform) {
         super(ANIM_SIZE, transform);
-        setAnimation(ANIM_IDLE, new Animation(4,2, "idle"));
-        setAnimation(ANIM_WALK, new Animation(4,4, "walking"));
+        setAnimation(ANIM_IDLE, new Animation(4,2, "player/idle"));
+        setAnimation(ANIM_WALK, new Animation(4,4, "player/walking"));
     }
 
     @Override
