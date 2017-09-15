@@ -12,8 +12,6 @@ import render.Model;
 import render.Shader;
 import world.World;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 public abstract class Entity {
     private static Model model;
     protected AABB boundingBox;

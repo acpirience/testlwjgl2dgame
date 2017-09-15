@@ -8,7 +8,6 @@ import io.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import render.Animation;
 import render.Camera;
 import render.Shader;
 
@@ -42,28 +41,33 @@ public class World {
         return world;
     }
 
-    public World(String worldName) {
+    public World(String worldName, Camera camera) {
         try {
             BufferedImage tile_sheet = ImageIO.read(new File("./levels/" + worldName + "/tiles.png"));
-            //BufferedImage entity_sheet = ImageIO.read(new File("./levels/" + world + "_entity.png"));
+            BufferedImage entity_sheet = ImageIO.read(new File("./levels/" + worldName + "/entities.png"));
 
             width = tile_sheet.getWidth();
             height = tile_sheet.getHeight();
 
             int[] colorTileSheet = tile_sheet.getRGB(0,0,width, height,null,0, width);
+            int[] colorEntitySheet = entity_sheet.getRGB(0,0,width, height,null,0, width);
+
 
             tiles = new byte[width * height];
             boundindBoxes = new AABB[width * height];
             entities = new ArrayList<Entity>();
 
+            Transform transform;
 
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
-                    int red = (colorTileSheet[x + y * width] >> 16) & 0xFF;
+                    int redValue = (colorTileSheet[x + y * width] >> 16) & 0xFF;
+                    int entityIndex = (colorEntitySheet[x + y * width] >> 16) & 0xFF;
+                    int entityAlpha = (colorEntitySheet[x + y * width] >> 24) & 0xFF;
 
                     Tile t;
                     try {
-                        t = Tile.tiles[red];
+                        t = Tile.tiles[redValue];
                     }
                     catch (ArrayIndexOutOfBoundsException e) {
                         t = null;
@@ -73,15 +77,27 @@ public class World {
                         setTile(t, x , y);
                     }
 
+                    if (entityAlpha > 0) {
+                        transform = new Transform();
+                        transform.pos.x = x * 2;
+                        transform.pos.y = -y * 2;
+
+                        switch(entityIndex) {
+                            case 1: // PLAYER
+                                Player player = new Player(transform);
+                                entities.add(player);
+                                camera.getPosition().set(transform.pos.mul(-scale, new Vector3f()));
+                                break;
+
+                            default:
+
+                                break;
+                        }
+                    }
+
                 }
 
             }
-
-            //TODO finish level loader
-            entities.add(new Player(new Transform()));
-            Transform t = new Transform();
-            t.pos.x = 0;
-            t.pos.y = -11 * 2;
 
 /*
             entities.add(new Entity(new Animation(1,1,"xxx"), t) {

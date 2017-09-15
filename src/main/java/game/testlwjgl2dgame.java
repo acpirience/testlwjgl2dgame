@@ -1,16 +1,10 @@
 package game;
 
-import collision.AABB;
 import entity.Entity;
-import entity.Player;
-import entity.Transform;
 import io.*;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 import render.*;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
-import world.Tile;
 import world.TileRenderer;
 import world.World;
 
@@ -47,8 +41,9 @@ public class testlwjgl2dgame {
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window.getWindow(), (window, key, scancode, action, mods) -> {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
+            if ((key == GLFW_KEY_ESCAPE) && (action == GLFW_RELEASE)) {
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+            }
         });
 
 
@@ -75,7 +70,7 @@ public class testlwjgl2dgame {
 
         Shader shader = new Shader("shader");
 
-        World world = new World("test_level");
+        World world = new World("test_level", camera);
 
         double frame_cap = 1.0 / 60.0; // 60 frame per second
         double frame_time = 0;
@@ -83,9 +78,6 @@ public class testlwjgl2dgame {
 
         double time = Timer.getTime();
         double unprocessed = 0;
-
-        // Set the clear color
-        //glClearColor(0.5f, 0.1f, 0.3f, 0.0f);
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.

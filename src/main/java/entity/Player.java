@@ -1,7 +1,5 @@
 package entity;
 
-import collision.AABB;
-import collision.Collision;
 import io.Window;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
