@@ -44,7 +44,7 @@ public class World {
 
     public World(String worldName) {
         try {
-            BufferedImage tile_sheet = ImageIO.read(new File("./levels/" + worldName + "_tiles.png"));
+            BufferedImage tile_sheet = ImageIO.read(new File("./levels/" + worldName + "/tiles.png"));
             //BufferedImage entity_sheet = ImageIO.read(new File("./levels/" + world + "_entity.png"));
 
             width = tile_sheet.getWidth();
