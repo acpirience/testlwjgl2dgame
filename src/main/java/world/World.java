@@ -83,6 +83,7 @@ public class World {
             t.pos.x = 0;
             t.pos.y = -11 * 2;
 
+/*
             entities.add(new Entity(new Animation(1,1,"xxx"), t) {
                 @Override
                 public void update(float delta, Window window, Camera camera, World world) {
@@ -90,7 +91,7 @@ public class World {
                 }
 
             });
-
+*/
 
         } catch (IOException e) {
             e.printStackTrace();
