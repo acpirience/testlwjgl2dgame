@@ -31,4 +31,9 @@ public class Camera {
     public Matrix4f getProjection() {
         return projection.translate(position, new Matrix4f());
     }
+
+    public Matrix4f getUntransformedProjection() {
+        return projection;
+    }
+
 }
