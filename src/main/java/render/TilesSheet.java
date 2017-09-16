@@ -20,7 +20,7 @@ public class TilesSheet {
     }
 
     public void bindTile(Shader shader, int x, int y) {
-        scale.translate(x,y,0,translation);
+        scale.translate(y,x,0,translation);
 
         shader.setUniform("sampler", 0);
         shader.setUniform("texModifier", translation);
@@ -29,8 +29,8 @@ public class TilesSheet {
     }
 
     public void bindTile(Shader shader, int tile) {
-        int y = tile % tileAmount;
-        int x = tile / tileAmount;
+        int x = tile % tileAmount;
+        int y = tile / tileAmount;
 
         bindTile(shader, x, y);
     }
